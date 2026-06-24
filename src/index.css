@@ -1,0 +1,46 @@
+:root {
+  --bg-main: #0f0f14;       /* Глубокий темный фон приложения */
+  --bg-card: #1a1a24;       /* Фон для карточек и инпутов */
+  --bg-hover: #252535;      /* Фон при наведении */
+  --text-main: #ffffff;     /* Основной белый текст */
+  --text-muted: #afb1b6;    /* Серый второстепенный текст */
+  --accent-color: #7b2cbf;  /* Фирменный фиолетовый цвет */
+  --accent-hover: #9d4edd;  /* Фиолетовый при наведении */
+  --danger-color: #ff4d4d;  /* Цвет для ошибок */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+/* Общие служебные стили, которые могут вызываться везде */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px 20px;
+}
+
+.loader {
+  text-align: center;
+  font-size: 18px;
+  color: var(--text-muted);
+  padding: 40px 0;
+}
+.errorMessage {
+  background-color: rgba(255, 77, 77, 0.1);
+  border: 1px solid var(--danger-color);
+  color: var(--danger-color);
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 20px 0;
+}
