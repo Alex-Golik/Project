@@ -42,7 +42,7 @@ export const MovieGrid: React.FC = () => {
     }, [data, isFetching, isError, setPage]);
 
 
-      return (
+    return (
         <S.ListContainer>           
             {isFetching && page === 1 && (
                 <S.StatusText>Поиск на сервере OMDb... ⏳</S.StatusText>

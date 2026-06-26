@@ -26,7 +26,7 @@ searchMovies: builder.query<MovieSearchResponse, { s: string; page: number; type
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         return `${endpointName}_${queryArgs.s}_${queryArgs.type || ''}_${queryArgs.y || ''}`;
       },
-       merge: (currentCache, newItems, { arg }) => {
+      merge: (currentCache, newItems, { arg }) => {
         if (arg.page === 1) {
           return newItems;
         }

@@ -9,21 +9,21 @@ import type { UserInfo } from '../../features/Auth/AuthSlice';
 
 
 interface HeaderProps {
-  searchQuery: string;
-  setSearchQuery: (val: string) => void;
-  page: number;
-  setPage: (val: number | ((p: number) => number)) => void;
-  contentType: string;
-  setContentType: (val: string) => void;
-  year: string;
-  setYear: (val: string) => void;
+    searchQuery: string;
+    setSearchQuery: (val: string) => void;
+    page: number;
+    setPage: (val: number | ((p: number) => number)) => void;
+    contentType: string;
+    setContentType: (val: string) => void;
+    year: string;
+    setYear: (val: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
-  searchQuery, setSearchQuery,
-  setPage,
-  contentType, setContentType,
-  year, setYear
+    searchQuery, setSearchQuery,
+    setPage,
+    contentType, setContentType,
+    year, setYear
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
         const lastLetter = user.lastName ? user.lastName.charAt(0).toUpperCase() : '';
         return `${firstLetter}${lastLetter}`;
     };
-     return (
+    return (
         <S.AppHeader>
             <S.HeaderNav>
                 {location.pathname === '/' && (

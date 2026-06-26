@@ -5,7 +5,6 @@ import * as S from './MovieDetailsStyle';
 export const MovieDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-  
     const { data: movie, isLoading, isError } = useGetMovieDetailsQuery(id || '', {
         skip: !id, 
     });

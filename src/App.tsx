@@ -26,7 +26,7 @@ function App() {
             
             <Route path="/about" element={<AboutPage />} />
             <Route path="/auth" element={<Auth />} />
-             <Route path="*" element={
+            <Route path="*" element={
               <S.InfoPageContainer>
                 <S.ErrorTitle>404 - Page Not Found 🔍</S.ErrorTitle>
                 <p>К сожалению, такой страницы в нашем кинотеатре не существует.</p>

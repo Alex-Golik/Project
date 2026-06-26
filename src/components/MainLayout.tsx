@@ -30,7 +30,7 @@ export const MainLayout: React.FC = () => {
   if (!currentUser && !isAuthPage) {
     return <Navigate to="/auth" replace />;
   }
-   return (
+  return (
     <S.AppLayout>
       <S.Sidebar>
         <S.AppLogo to="/">
@@ -39,7 +39,7 @@ export const MainLayout: React.FC = () => {
         </S.AppLogo>
         <Tabs />
       </S.Sidebar>
-           <S.MainContent>
+      <S.MainContent>
         <Header 
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

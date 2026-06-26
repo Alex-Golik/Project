@@ -33,7 +33,7 @@ export const TabLink = styled(Link)<TabLinkProps>`
     background-color: ${props => props.$isActive ? 'var(--accent-hover)' : 'var(--bg-hover)'};
     transform: translateX(4px); /* Легкий аккуратный сдвиг вбок при ховере */
   }
-   &:active {
+  &:active {
     transform: scale(0.98);
   }
 `;
