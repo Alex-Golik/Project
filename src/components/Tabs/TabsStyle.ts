@@ -31,9 +31,30 @@ export const TabLink = styled(Link)<TabLinkProps>`
   &:hover {
     color: ${props => props.$isActive ? '#fff' : 'var(--text-main)'};
     background-color: ${props => props.$isActive ? 'var(--accent-hover)' : 'var(--bg-hover)'};
-    transform: translateX(4px); /* Легкий аккуратный сдвиг вбок при ховере */
+    transform: translateX(4px); 
   }
   &:active {
     transform: scale(0.98);
   }
+`;
+
+export const TabBadge = styled.span`
+  background-color: var(--accent-color, #7b61ff);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10px;
+  height: 14px;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 5px rgba(123, 97, 255, 0.3);
+  transition: background-color 0.2s;
+
+  
+  opacity: 0.9;
 `;

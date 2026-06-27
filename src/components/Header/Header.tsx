@@ -1,29 +1,36 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { formatDate } from '../../utils/formatDate';
 import * as S from './HeaderStyle';
 import { FilterMenu } from '../FilterMenu/FilterMenu';
+import { ProfileDropdown } from './ProfileDropdown';
+import { SearchSuggestion } from './SearchSuggestion'
+import { getInitials } from '../../utils/getInitials';
 import { selectCurrentUser, logoutUser } from '../../features/Auth/AuthSlice'
 import { useSelector, useDispatch } from 'react-redux';
-import type { UserInfo } from '../../features/Auth/AuthSlice';
 
 
 interface HeaderProps {
     searchQuery: string;
     setSearchQuery: (val: string) => void;
+    searchSuggestion: string;
+    setSearchSuggestion: (val: string) => void;
     page: number;
     setPage: (val: number | ((p: number) => number)) => void;
     contentType: string;
     setContentType: (val: string) => void;
     year: string;
     setYear: (val: string) => void;
+    sortByRating: string;         
+    setSortByRating: (val: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
     searchQuery, setSearchQuery,
+    searchSuggestion, setSearchSuggestion,
     setPage,
     contentType, setContentType,
-    year, setYear
+    year, setYear,
+    sortByRating, setSortByRating
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -46,15 +53,16 @@ export const Header: React.FC<HeaderProps> = ({
         setIsMenuOpen(false);
     };
 
-    const getInitials = (user: UserInfo) => {
-        const firstLetter = user.firstName ? user.firstName.charAt(0).toUpperCase() : '';
-        const lastLetter = user.lastName ? user.lastName.charAt(0).toUpperCase() : '';
-        return `${firstLetter}${lastLetter}`;
+    const handleAcceptSuggestion = (correctedText: string) => {
+        setSearchQuery(correctedText); 
+        setPage(1);                    
+        setSearchSuggestion('');      
     };
+
     return (
         <S.AppHeader>
             <S.HeaderNav>
-                {location.pathname === '/' && (
+                {location.pathname !== '/auth' && location.pathname !== '/about' ? (
                     <S.SearchSection>
                         <S.SearchContainer>
                             <S.SearchInput 
@@ -69,10 +77,18 @@ export const Header: React.FC<HeaderProps> = ({
                                     setYear={(val) => { setYear(val); setPage(1); }}
                                     contentType={contentType}
                                     setContentType={(val) => { setContentType(val); setPage(1); }}
+                                    sortByRating={sortByRating}
+                                    setSortByRating={(val) => { setSortByRating(val); setPage(1); }}
                                 />
                             </S.BurgerWrapper>
                         </S.SearchContainer>
+                        <SearchSuggestion 
+                            suggestion={searchSuggestion} 
+                            onAccept={handleAcceptSuggestion} 
+                        />
                     </S.SearchSection>
+                ) : (
+                    <S.EmptySearchSpacer />
                 )}
                 {currentUser ? (
                     <S.ProfileMenuContainer ref={menuRef}>
@@ -84,22 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
                             {getInitials(currentUser)}
                         </S.AvatarCircle>
                         {isMenuOpen && (
-                            <S.ProfileDropdown>
-                                <S.ProfileDropdownInfo>
-                                    <S.ProfileDropdownName>
-                                        {currentUser.firstName} {currentUser.lastName}
-                                    </S.ProfileDropdownName>
-                                    <S.ProfileDropdownEmail>
-                                        {currentUser.email}
-                                    </S.ProfileDropdownEmail>
-                                </S.ProfileDropdownInfo>
-                                <S.ProfileDropdownDate>
-                                    Регистрация: <S.ProfileDropdownDateSpan>{formatDate(currentUser.registeredAt) || 'Неизвестно'}</S.ProfileDropdownDateSpan>
-                                </S.ProfileDropdownDate>
-                                <S.LogoutBtn onClick={handleLogout}>
-                                    Выйти из аккаунта
-                                </S.LogoutBtn>
-                            </S.ProfileDropdown>
+                            <ProfileDropdown user={currentUser} onLogout={handleLogout} />
                         )}
                     </S.ProfileMenuContainer>
                     ) : (

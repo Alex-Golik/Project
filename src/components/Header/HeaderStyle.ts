@@ -194,3 +194,8 @@ export const LoginLink = styled(Link)`
     background-color: var(--accent-hover);
   }
 `;
+
+export const EmptySearchSpacer = styled.div`
+  flex: 1;
+  max-width: 1000px;
+`;

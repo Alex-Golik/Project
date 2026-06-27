@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import * as S from './FilterMenuStyle';
+import { RatingSortSelect } from './RatingSortSelect';
+import { YearSelect } from './YearSelect';
+import { ContentTypeSelect } from './ContentTypeSelect';
 
 interface FilterMenuProps {
   year: string;
   setYear: (year: string) => void;
   contentType: string;
   setContentType: (type: string) => void;
+  sortByRating: string;
+  setSortByRating: (val: string) => void;
 }
 
 export const FilterMenu: React.FC<FilterMenuProps> = ({
@@ -13,6 +18,8 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
   setYear,
   contentType,
   setContentType,
+  sortByRating,
+  setSortByRating,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -22,18 +29,18 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
         setIsOpen(false);
       }
     };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
   const handleReset = () => {
     setYear('');
     setContentType('');
+    setSortByRating('');
     setIsOpen(false);
   };
+
+  const hasActiveFilters = year || contentType || sortByRating;
 
   return (
     <S.Container ref={menuRef}>
@@ -45,28 +52,13 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
       
       {isOpen && (
         <S.Dropdown>
-          <S.FilterGroup>
-            <S.FilterLabel>Год выпуска</S.FilterLabel>
-            <S.Select value={year} onChange={(e) => setYear(e.target.value)}>
-              <option value="">Все годы</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-            </S.Select>
-          </S.FilterGroup>
+          <RatingSortSelect value={sortByRating} onChange={setSortByRating} />
+          <YearSelect value={year} onChange={setYear} />
+          <ContentTypeSelect value={contentType} onChange={setContentType} />
 
-          <S.FilterGroup>
-            <S.FilterLabel>Тип контента</S.FilterLabel>
-            <S.Select value={contentType} onChange={(e) => setContentType(e.target.value)}>
-              <option value="">Все типы</option>
-              <option value="movie">Фильмы</option>
-              <option value="series">Сериалы</option> 
-            </S.Select>
-          </S.FilterGroup>
-
-          {(year || contentType) && (
+          {hasActiveFilters && (
             <S.ResetButton onClick={handleReset}>
-              Сбросить
+              Сбросить все
             </S.ResetButton>
           )}
         </S.Dropdown>

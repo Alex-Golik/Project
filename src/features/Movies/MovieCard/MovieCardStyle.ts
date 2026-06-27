@@ -1,7 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const skeletonGlow = keyframes`
+  0% { background-color: #1a1a24; }
+  50% { background-color: #2d2d3f; }
+  100% { background-color: #1a1a24; }
+`;
 
 export const CardWrapper = styled.div`
-  background-color: var(--bg-card);
+  background-color: var(--bg-card, #1f1f27);
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -17,15 +23,68 @@ export const CardWrapper = styled.div`
   }
 `;
 
-export const CardImage = styled.img`
+export const ImageContainer = styled.div`
   width: 100%;
   height: 360px;
-  object-fit: cover;
-  transition: opacity 0.2s;
-  display: block; 
+  overflow: hidden;   
+  position: relative; 
+  background-color: #13131a;
+`;
+
+export const SkeletonLoader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  animation: ${skeletonGlow} 1.5s ease-in-out infinite;
+`;
+
+export const NoPosterPlaceholder = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #13131a 0%, #1f1f27 100%);
+  color: var(--text-muted, #76787d);
+  gap: 12px;
+  font-family: 'Inter', sans-serif;
+  border-bottom: 1px solid #2d2d3f;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  span {
+    font-size: 40px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
 
   ${CardWrapper}:hover & {
-    opacity: 0.9;
+    transform: scale(1.06);
+    color: var(--text-main, #fff);
+  }
+`;
+
+export const CardImage = styled.img<{ $isLoaded: boolean }>`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  
+  opacity: ${props => props.$isLoaded ? 1 : 0};
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+
+  ${CardWrapper}:hover & {
+    transform: scale(1.06);
   }
 `;
 
@@ -34,11 +93,12 @@ export const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-grow: 1;
 `;
 
 export const CardBadge = styled.span`
   display: inline-block;
-  color: var(--accent-color);
+  color: var(--accent-color, #7b61ff);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -47,11 +107,98 @@ export const CardBadge = styled.span`
 export const CardTitle = styled.h3`
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--text-main, #fff);
   margin: 0;
-  
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+`;
+
+export const RatingBadge = styled.div<{ $ratingColor: string }>`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: ${props => props.$ratingColor};
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  font-family: 'Inter', sans-serif;
+`;
+
+export const CardFooter = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto; 
+`;
+
+export const WatchLaterBtn = styled.button<{ $isActive: boolean }>`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.$isActive ? 'var(--accent-color, #7b61ff)' : 'var(--text-muted, #76787d)'};
+  transition: transform 0.2s ease, color 0.2s ease;
+  z-index: 10; 
+
+  &:hover {
+    transform: scale(1.2);
+    color: var(--accent-color, #7b61ff);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+`;
+
+export const FavoriteBtn = styled.button<{ $isActive: boolean }>`
+  position: absolute;
+  top: 12px;
+  left: 12px; /* Располагаем строго слева вверху */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: ${props => props.$isActive ? '#ffd700' : 'rgba(255, 255, 255, 0.6)'};
+  transition: transform 0.2s ease, color 0.2s ease;
+  z-index: 6; 
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+
+  &:hover {
+    transform: scale(1.2);
+    color: #ffd700;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
 `;
