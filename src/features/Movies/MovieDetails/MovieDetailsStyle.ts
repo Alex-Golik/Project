@@ -1,4 +1,79 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const skeletonGlow = keyframes`
+  0% { background-color: #1a1a24; }
+  50% { background-color: #2d2d3f; }
+  100% { background-color: #1a1a24; }
+`;
+
+export const SkeletonContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }`;
+
+export const SkeletonPoster = styled.div`
+  width: 300px;
+  height: 450px;
+  border-radius: 14px;
+  animation: ${skeletonGlow} 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 260px;
+    height: 390px;
+  }
+`;
+
+export const SkeletonInfoSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  width: 100%;
+`;
+
+
+export const SkeletonMainTitle = styled.div`
+  width: 60%;
+  height: 32px;
+  border-radius: 6px;
+  animation: ${skeletonGlow} 1.5s ease-in-out infinite;
+`;
+
+
+export const SkeletonMetaGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px 0;
+`;
+
+
+export const SkeletonLine = styled.div<{ $width?: string }>`
+  width: ${props => props.$width || '40%'};
+  height: 16px;
+  border-radius: 4px;
+  animation: ${skeletonGlow} 1.5s ease-in-out infinite;
+`;
+
+
+export const SkeletonPlotBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+  border-top: 1px solid #2d2d3f;
+  padding-top: 20px;
+`;
 
 export const DetailsContainer = styled.div`
   max-width: 1200px;
@@ -48,10 +123,8 @@ export const DetailsMainInfo = styled.div`
   margin-bottom: 30px;
 
   @media (max-width: 640px) {
-    flex-direction: column; /* Защита адаптива для мобилок */
+    flex-direction: column; 
   }
-
-  /* Стилизация внутренних строк с описанием */
   div {
     display: flex;
     flex-direction: column;
@@ -109,4 +182,20 @@ export const PageStateContainer = styled.div`
   gap: 20px;
   color: var(--text-main);
   font-size: 18px;
+`;
+
+export const ErrorContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--text-muted, #76787d);
+  font-family: 'Inter', sans-serif;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--danger-color, #ff4d4d);
+    margin: 0;
+  }
 `;

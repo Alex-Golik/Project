@@ -1,24 +1,24 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetMovieDetailsQuery } from '../../../services/movieApi';
+import { DetailsSkeleton } from './DetailsSkeleton';
 import * as S from './MovieDetailsStyle';
 
 export const MovieDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { data: movie, isLoading, isError } = useGetMovieDetailsQuery(id || '', {
+    const { data: movie, isFetching, isError } = useGetMovieDetailsQuery(id || '', {
         skip: !id, 
     });
 
-    if (isLoading) {
-        return <S.PageStateContainer>Загрузка сюжета и деталей... ⏳</S.PageStateContainer>;
+    if (isFetching) {
+        return <DetailsSkeleton />;
     }
 
-    if (isError || !movie) {
+    if (isError || !movie || movie.Response === "False") {
         return (
-            <S.PageStateContainer>
-                <div>Фильм не найден или произошла ошибка загрузки 😕</div>
-                <S.BackBtn onClick={() => navigate('/')}>На главную</S.BackBtn>
-            </S.PageStateContainer>
+            <S.ErrorContainer>
+                <h2>Фильм не найден или произошла ошибка запроса</h2>
+            </S.ErrorContainer>
         );
     }
 

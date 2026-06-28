@@ -1,9 +1,25 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 const skeletonGlow = keyframes`
   0% { background-color: #1a1a24; }
   50% { background-color: #2d2d3f; }
   100% { background-color: #1a1a24; }
+`;
+
+const clockWobble = keyframes`
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(15deg) scale(1.15); }
+  50% { transform: rotate(-10deg) scale(1.15); }
+  75% { transform: rotate(5deg) scale(1.15); }
+  100% { transform: rotate(0deg) scale(1); }
+`;
+
+const starPop = keyframes`
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.3) rotate(-15deg); }
+  50% { transform: scale(1.1) rotate(10deg); }
+  70% { transform: scale(1.2) rotate(-5deg); }
+  100% { transform: scale(1) rotate(0deg); }
 `;
 
 export const CardWrapper = styled.div`
@@ -151,13 +167,17 @@ export const WatchLaterBtn = styled.button<{ $isActive: boolean }>`
   align-items: center;
   justify-content: center;
   color: ${props => props.$isActive ? 'var(--accent-color, #7b61ff)' : 'var(--text-muted, #76787d)'};
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
   z-index: 10; 
 
   &:hover {
     transform: scale(1.2);
     color: var(--accent-color, #7b61ff);
   }
+
+  ${props => props.$isActive && css`
+    animation: ${clockWobble} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  `}
 
   &:active {
     transform: scale(0.9);
@@ -173,7 +193,7 @@ export const WatchLaterBtn = styled.button<{ $isActive: boolean }>`
 export const FavoriteBtn = styled.button<{ $isActive: boolean }>`
   position: absolute;
   top: 12px;
-  left: 12px; /* Располагаем строго слева вверху */
+  left: 12px; 
   background: none;
   border: none;
   cursor: pointer;
@@ -191,6 +211,10 @@ export const FavoriteBtn = styled.button<{ $isActive: boolean }>`
     transform: scale(1.2);
     color: #ffd700;
   }
+
+  ${props => props.$isActive && css`
+    animation: ${starPop} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  `}
 
   &:active {
     transform: scale(0.9);
