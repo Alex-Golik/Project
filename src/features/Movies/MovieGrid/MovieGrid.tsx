@@ -5,7 +5,7 @@ import { useEffect, useRef, useMemo } from 'react';
 import { useSpellChecker } from '../../../hooks/UseSpellChecker';
 import * as S from './MovieGridStyle';
 import type { MoviesContextType } from '../../../components/MainLayout';
-import { getMovieRating } from '../../../utils/GetMovieRating'
+import { getMovieRating } from '../../../utils/getMovieRating'
 import { GridSkeleton } from './GridSkeleton';
 import {useMovieTranslator} from '../../../hooks/UseMovieTranslator'
 import { useAppSelector } from '../../../hooks/UseAppSelector';

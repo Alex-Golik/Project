@@ -1,12 +1,13 @@
 import type { MovieShort } from '../../../types/movie';
 import * as S from './MovieCardStyle';
-import { getMovieRating, getRatingColor } from '../../../utils/GetMovieRating';
+import { getMovieRating, getRatingColor } from '../../../utils/getMovieRating';
 import { toggleWatchLater, selectWatchLaterMovies } from '../../WatchLater/WatchLaterSlice';
 import { toggleFavorite, selectFavoriteMovies } from '../../Favorites/FavoritesSlice';
 import { useToast } from '../../../hooks/UseToast';
 import { useImagePreloader } from '../../../hooks/UseImagePreloader';
 import { useAppDispatch } from '../../../hooks/UseAppDispatch';
 import { useAppSelector } from '../../../hooks/UseAppSelector';
+import { selectCommentsCountByMovieID } from '../../Comments/СommentsSlice';
 
 
 interface MovieCardProps {
@@ -25,6 +26,7 @@ export const MovieCard = ({ movie, onCardClick }: MovieCardProps) => {
   const ratingColor = getRatingColor(rating);
   const { isLoaded, hasError } = useImagePreloader(movie.Poster);
   const isMissingPoster = movie.Poster === 'N/A' || hasError;
+  const commentsCount = useAppSelector((state) => selectCommentsCountByMovieID(state, movie.imdbID));
 
   const handleWatchLaterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); 
@@ -87,18 +89,29 @@ export const MovieCard = ({ movie, onCardClick }: MovieCardProps) => {
         <S.CardBadge>
           {movie.Type.toUpperCase()} ({movie.Year})
         </S.CardBadge>
-                <S.CardFooter>
+        <S.CardFooter>
           <S.CardTitle title={movie.Title}>{movie.Title}</S.CardTitle>
-          <S.WatchLaterBtn 
-            $isActive={isWatchLater} 
-            onClick={handleWatchLaterClick}
-            title={isWatchLater ? "Убрать из смотреть позже" : "Смотреть позже"}
-          >
-          <svg viewBox="0 0 24 24">
-          <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13zm-5-12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm.5 4.5H10V9h1v1h1.5v1z"/>
-          </svg>
-          </S.WatchLaterBtn>
-        </S.CardFooter>
+          <S.CardControlsGroup>
+            {commentsCount > 0 && (
+              <S.CommentsCountIndicator title={`Комментариев: ${commentsCount}`}>
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+                </svg>
+                <span>{commentsCount}</span>
+              </S.CommentsCountIndicator>
+            )}
+
+            <S.WatchLaterBtn 
+              $isActive={isWatchLater} 
+              onClick={handleWatchLaterClick}
+              title={isWatchLater ? "Убрать из смотреть позже" : "Смотреть позже"}
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13zm-5-12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm.5 4.5H10V9h1v1h1.5v1z"/>
+              </svg>
+            </S.WatchLaterBtn>
+          </S.CardControlsGroup>
+      </S.CardFooter>
 
       </S.CardContent>
     </S.CardWrapper>

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getMovieRating } from '../utils/GetMovieRating';
+import { getMovieRating } from '../utils/getMovieRating';
 import type { MovieShort } from '../types/movie';
 import type { ContentType } from '../components/FilterMenu/ContentTypeSelect';
 import { useAppSelector } from './UseAppSelector'; 

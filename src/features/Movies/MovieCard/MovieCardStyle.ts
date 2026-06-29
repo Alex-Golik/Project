@@ -125,6 +125,12 @@ export const CardTitle = styled.h3`
   font-weight: 600;
   color: var(--text-main, #fff);
   margin: 0;
+  line-height: 1.4;
+  min-height: calc(1.4em * 2); 
+  
+  flex: 1; 
+  min-width: 0; 
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -152,10 +158,12 @@ export const RatingBadge = styled.div<{ $ratingColor: string }>`
 
 export const CardFooter = styled.div`
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  align-items: center; 
+  justify-content: space-between; 
   gap: 12px;
   margin-top: auto; 
+  width: 100%;
+  flex-wrap: nowrap; 
 `;
 
 export const WatchLaterBtn = styled.button<{ $isActive: boolean }>`
@@ -224,5 +232,39 @@ export const FavoriteBtn = styled.button<{ $isActive: boolean }>`
     width: 24px;
     height: 24px;
     fill: currentColor;
+  }
+`;
+
+export const CardControlsGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px; 
+  flex-shrink: 0;
+  margin-bottom: 4px; 
+`;
+
+export const CommentsCountIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted, #76787d);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+  transition: color 0.2s ease;
+
+  ${CardWrapper}:hover & {
+    color: var(--text-main, #fff);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  span {
+    line-height: 1;
   }
 `;

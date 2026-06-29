@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getInitials } from './GetInitials';
+import { getInitials } from './getInitials';
 import type { UserInfo } from '../features/Auth/AuthSlice';
 
 describe('Утилита getInitials', () => {

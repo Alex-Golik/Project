@@ -6,6 +6,10 @@ export const AppLayout = styled.div`
   display: flex;
   min-height: 100vh;
   background-color: var(--bg-primary, #13131a); 
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const Sidebar = styled.aside`
@@ -21,7 +25,22 @@ export const Sidebar = styled.aside`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    display: none;
+    position: static; 
+    width: 100%;
+    height: auto;
+    padding: 16px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--bg-card);
+    flex-direction: row; 
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 `;
 
@@ -34,6 +53,7 @@ export const MainContent = styled.main`
 
   @media (max-width: 768px) {
     padding-left: 0; 
+    width: 100%;
   }
 `;
 
@@ -46,6 +66,11 @@ export const AppLogo = styled(Link)`
   text-decoration: none;
   font-family: 'Inter', system-ui, sans-serif;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+    font-size: 24px; 
+  }
 `;
 
 export const LogoAccent = styled.span`

@@ -8,6 +8,13 @@ export const TabsContainer = styled.div`
   width: 100%;
   margin-top: 40px; 
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+@media (max-width: 768px) {
+  flex-direction: row;
+  margin-top: 0;
+  gap: 8px;
+  width: auto; 
+}
 `;
 
 interface TabLinkProps {

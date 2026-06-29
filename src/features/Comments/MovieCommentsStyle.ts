@@ -87,3 +87,54 @@ export const CommentText = styled.p`
   font-size: 15px;
   line-height: 1.5;
 `;
+
+export const DeleteCommentBtn = styled.button`
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--text-muted, #76787d);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--danger-color, #ff4d4d);
+    background-color: rgba(255, 77, 77, 0.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+export const CommentMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const NoCommentsText = styled.p`
+  color: var(--text-muted, #76787d);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+`;
+
+export const AuthPromptText = styled.p`
+  color: var(--text-muted, #76787d);
+  margin-bottom: 30px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+
+  a {
+    color: var(--accent-color, #7b61ff);
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;

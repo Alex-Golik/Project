@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import * as S from './HeaderStyle';
 import { ProfileDropdown } from './ProfileDropdown';
 import { SearchInputWrapper } from './SearchInputWrapper';
-import { getInitials } from '../../utils/GetInitials';
+import { getInitials } from '../../utils/getInitials';
 import { selectCurrentUser, logoutUser } from '../../features/Auth/AuthSlice'
 import { useAppDispatch } from '../../hooks/UseAppDispatch'
 import { useAppSelector } from '../../hooks/UseAppSelector';

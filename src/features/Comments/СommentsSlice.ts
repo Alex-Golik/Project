@@ -6,6 +6,7 @@ export interface CommentItem {
     id: string;
     movieID: string;
     authorName: string;
+    authorEmail: string;
     text: string;
     createdAt: string;
 }
@@ -34,15 +35,31 @@ const commentsSlice = createSlice({
             state.items.unshift(action.payload); 
             localStorage.setItem('pixema_comments', JSON.stringify(state.items));
         },
+        deleteComment: (state, action: PayloadAction<string>) => {
+            state.items = state.items.filter(comment => comment.id !== action.payload);
+            localStorage.setItem('pixema_comments', JSON.stringify(state.items));
+        },
+        editComment: (state, action: PayloadAction<{ id: string; text: string }>) => {
+            const { id, text } = action.payload;
+            const existingComment = state.items.find(comment => comment.id === id);
+            if (existingComment) {
+                existingComment.text = text;
+                localStorage.setItem('pixema_comments', JSON.stringify(state.items));
+            }
+        }
     },
 });
 
+export const { addComment, deleteComment, editComment } = commentsSlice.actions;
 const selectAllComments = (state: RootState) => state.comments?.items || [];
-export const { addComment } = commentsSlice.actions;
-export const selectCommentsByMovieID = (movieID: string) => 
-    createSelector(
-        [selectAllComments],
-        (items) => items.filter(comment => comment.movieID === movieID)
+const selectMovieID = (_state: RootState, movieID: string) => movieID;
+export const selectCommentsByMovieID = createSelector(
+        [selectAllComments, selectMovieID],
+        (items, movieID) => items.filter(comment => comment.movieID === movieID)
     );
+export const selectCommentsCountByMovieID = createSelector(
+    [selectCommentsByMovieID],
+    (movieComments) => movieComments.length
+);
 
 export default commentsSlice.reducer;
