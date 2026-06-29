@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../App/Store';
+import type { RootState } from '../../App/store';
 import type { ContentType } from '../../components/FilterMenu/ContentTypeSelect';
 import type { SortType } from '../../components/FilterMenu/RatingSortSelect';
 

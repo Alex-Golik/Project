@@ -5,7 +5,7 @@ import { FilterMenu } from '../FilterMenu/FilterMenu';
 import { SearchSuggestion } from './SearchSuggestion';
 import { useAppDispatch } from '../../hooks/UseAppDispatch';
 import { useAppSelector } from '../../hooks/UseAppSelector';
-import * as R from '../../features/Filters/SearchSlice';
+import * as R from '../../features/Filters/searchSlice';
 
 export const SearchInputWrapper = () => {
     const location = useLocation();

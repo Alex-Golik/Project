@@ -9,7 +9,7 @@ import { getMovieRating } from '../../../utils/getMovieRating'
 import { GridSkeleton } from './GridSkeleton';
 import {useMovieTranslator} from '../../../hooks/UseMovieTranslator'
 import { useAppSelector } from '../../../hooks/UseAppSelector';
-import { selectSearchByPage } from '../../Filters/SearchSlice'; 
+import { selectSearchByPage } from '../../Filters/searchSlice'; 
 import { useDebounce } from '../../../hooks/UseDebounce';
 
 

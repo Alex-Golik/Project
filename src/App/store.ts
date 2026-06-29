@@ -3,7 +3,7 @@ import { movieApi } from '../services/movieApi';
 import { authReducer } from '../features/Auth/AuthSlice';
 import { watchLaterReducer } from '../features/WatchLater/WatchLaterSlice';
 import { favoritesReducer } from '../features/Favorites/FavoritesSlice';
-import  searchReducer from '../features/Filters/SearchSlice';
+import  searchReducer from '../features/Filters/searchSlice';
 import commentsReducer from '../features/Comments/СommentsSlice'; 
 
 export const store = configureStore({

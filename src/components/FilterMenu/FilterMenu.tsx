@@ -6,7 +6,7 @@ import { YearSelect } from './YearSelect';
 import { ContentTypeSelect } from './ContentTypeSelect';
 import { useAppDispatch } from '../../hooks/UseAppDispatch';
 import { useAppSelector } from '../../hooks/UseAppSelector';
-import * as R from '../../features/Filters/SearchSlice';
+import * as R from '../../features/Filters/searchSlice';
 
 export const FilterMenu = () => {
   const [isOpen, setIsOpen] = useState(false);

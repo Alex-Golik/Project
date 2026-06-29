@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../App/Store';
+import type { RootState } from '../../App/store';
 
 export interface CommentItem {
     id: string;

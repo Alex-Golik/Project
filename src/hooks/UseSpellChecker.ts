@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDebounce } from './UseDebounce';
-import { selectSearchByPage, updateSearchText } from '../features/Filters/SearchSlice';
+import { selectSearchByPage, updateSearchText } from '../features/Filters/searchSlice';
 import { useAppDispatch } from './UseAppDispatch';
 import { useAppSelector } from './UseAppSelector';
 

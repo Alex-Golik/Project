@@ -4,7 +4,7 @@ import { getMovieRating } from '../utils/getMovieRating';
 import type { MovieShort } from '../types/movie';
 import type { ContentType } from '../components/FilterMenu/ContentTypeSelect';
 import { useAppSelector } from './UseAppSelector'; 
-import { selectSearchByPage} from '../features/Filters/SearchSlice';
+import { selectSearchByPage} from '../features/Filters/searchSlice';
 
 
 export const useFilteredCollection = (moviesList: MovieShort[]) => {

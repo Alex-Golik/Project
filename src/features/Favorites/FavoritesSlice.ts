@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { MovieShort } from '../../types/movie';
-import type { RootState } from '../../App/Store';
+import type { RootState } from '../../App/store';
 
 
 interface FavoritesState {
