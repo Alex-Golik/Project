@@ -1,6 +1,6 @@
 import type { MovieShort } from '../../../types/movie';
 import * as S from './MovieCardStyle';
-import { getMovieRating, getRatingColor } from '../../../utils/getMovieRating';
+import { getMovieRating, getRatingColor } from '../../../utils/GetMovieRating';
 import { toggleWatchLater, selectWatchLaterMovies } from '../../WatchLater/WatchLaterSlice';
 import { toggleFavorite, selectFavoriteMovies } from '../../Favorites/FavoritesSlice';
 import { useToast } from '../../../hooks/UseToast';

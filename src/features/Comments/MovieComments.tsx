@@ -3,7 +3,7 @@ import { useAppDispatch } from '../../hooks/UseAppDispatch';
 import { useAppSelector } from '../../hooks/UseAppSelector';
 import { selectCurrentUser } from '../Auth/AuthSlice';
 import { addComment, selectCommentsByMovieID } from './СommentsSlice';
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from '../../utils/FormatDate';
 import { useToast } from '../../hooks/UseToast';
 import { Link } from 'react-router-dom';
 import * as S from './MovieCommentsStyle';

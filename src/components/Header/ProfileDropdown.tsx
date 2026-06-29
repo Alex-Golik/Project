@@ -1,5 +1,5 @@
 import * as S from './HeaderStyle';
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from '../../utils/FormatDate';
 import type { UserInfo } from '../../features/Auth/AuthSlice';
 
 interface ProfileDropdownProps {
