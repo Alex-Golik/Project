@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { MovieShort } from '../../types/movie';
 import type { RootState } from '../../App/store';
 
+
 interface FavoritesState {
     movies: MovieShort[];
 }

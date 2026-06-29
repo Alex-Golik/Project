@@ -21,19 +21,22 @@ export interface MoviesContextType {
   year: string;
   setYear: (val: string) => void;
   sortByRating: string;
-  setSortByRating: (val: string) => void; 
+  setSortByRating: (val: string) => void;
+  localCollectionQuery: string;
+  setLocalCollectionQuery: (val: string) => void; 
 }
 
 export const MainLayout: React.FC = () => {
     const location = useLocation();
     const currentUser = useSelector(selectCurrentUser);
-    const [searchQuery, setSearchQuery] = useState('man');
+    const [searchQuery, setSearchQuery] = useState('');
     const [searchSuggestion, setSearchSuggestion] = useState('');
     const [page, setPage] = useState(1);
     const [contentType, setContentType] = useState('');
     const [year, setYear] = useState('');
     const [sortByRating, setSortByRating] = useState('');
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
+    const [localCollectionQuery, setLocalCollectionQuery] = useState('');
 
   const isAuthPage = location.pathname === '/auth' || location.pathname === '/about';
   if (!currentUser && !isAuthPage) {
@@ -49,20 +52,7 @@ export const MainLayout: React.FC = () => {
         <Tabs />
       </S.Sidebar>
       <S.MainContent>
-        <Header 
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          searchSuggestion={searchSuggestion}     
-          setSearchSuggestion={setSearchSuggestion}
-          page={page}
-          setPage={setPage}
-          contentType={contentType}
-          setContentType={setContentType}
-          year={year}
-          setYear={setYear}
-          sortByRating={sortByRating}       
-          setSortByRating={setSortByRating} 
-        />
+        <Header />
 
         <Outlet context={{ 
           searchQuery, setSearchQuery, 
@@ -71,7 +61,8 @@ export const MainLayout: React.FC = () => {
           page, setPage, 
           contentType, setContentType, 
           year, setYear, 
-          sortByRating, setSortByRating
+          sortByRating, setSortByRating,
+          localCollectionQuery, setLocalCollectionQuery
           }} />
       </S.MainContent>
     </S.AppLayout>

@@ -4,6 +4,7 @@ import { selectWatchLaterMovies } from '../../features/WatchLater/WatchLaterSlic
 import { selectFavoriteMovies } from '../../features/Favorites/FavoritesSlice';
 import * as S from './TabsStyle';
 
+
 export const Tabs: React.FC = () => {
   const location = useLocation();
   const watchLaterMovies = useSelector(selectWatchLaterMovies);
@@ -15,18 +16,14 @@ export const Tabs: React.FC = () => {
         Home
       </S.TabLink>
 
-      <S.TabLink to="/watch-later" $isActive={location.pathname === '/watch-later'}>
+      <S.TabLink to="/watch-later" $isActive={location.pathname === '/watch-later'} >
         Watch Later
-        {watchLaterMovies.length > 0 && (
-          <S.TabBadge>{watchLaterMovies.length}</S.TabBadge>
-        )}
+        {watchLaterMovies.length > 0 && <S.TabBadge>{watchLaterMovies.length}</S.TabBadge>}
       </S.TabLink>
       
       <S.TabLink to="/favorites" $isActive={location.pathname === '/favorites'}>
         Favorites
-        {favoriteMovies.length > 0 && (
-          <S.TabBadge>{favoriteMovies.length}</S.TabBadge>
-        )}
+        {favoriteMovies.length > 0 && <S.TabBadge>{favoriteMovies.length}</S.TabBadge>}
       </S.TabLink>
 
       <S.TabLink to="/about" $isActive={location.pathname === '/about'}>

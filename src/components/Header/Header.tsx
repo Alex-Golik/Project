@@ -1,37 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as S from './HeaderStyle';
-import { FilterMenu } from '../FilterMenu/FilterMenu';
 import { ProfileDropdown } from './ProfileDropdown';
-import { SearchSuggestion } from './SearchSuggestion'
+import { SearchInputWrapper } from './SearchInputWrapper';
 import { getInitials } from '../../utils/getInitials';
 import { selectCurrentUser, logoutUser } from '../../features/Auth/AuthSlice'
 import { useSelector, useDispatch } from 'react-redux';
 
 
-interface HeaderProps {
-    searchQuery: string;
-    setSearchQuery: (val: string) => void;
-    searchSuggestion: string;
-    setSearchSuggestion: (val: string) => void;
-    page: number;
-    setPage: (val: number | ((p: number) => number)) => void;
-    contentType: string;
-    setContentType: (val: string) => void;
-    year: string;
-    setYear: (val: string) => void;
-    sortByRating: string;         
-    setSortByRating: (val: string) => void;
-}
+interface HeaderProps {}
 
-export const Header: React.FC<HeaderProps> = ({ 
-    searchQuery, setSearchQuery,
-    searchSuggestion, setSearchSuggestion,
-    setPage,
-    contentType, setContentType,
-    year, setYear,
-    sortByRating, setSortByRating
-}) => {
+export const Header: React.FC<HeaderProps> = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const location = useLocation();
@@ -53,43 +32,15 @@ export const Header: React.FC<HeaderProps> = ({
         setIsMenuOpen(false);
     };
 
-    const handleAcceptSuggestion = (correctedText: string) => {
-        setSearchQuery(correctedText); 
-        setPage(1);                    
-        setSearchSuggestion('');      
-    };
-
     return (
         <S.AppHeader>
             <S.HeaderNav>
                 {location.pathname !== '/auth' && location.pathname !== '/about' ? (
-                    <S.SearchSection>
-                        <S.SearchContainer>
-                            <S.SearchInput 
-                                type="text" 
-                                value={searchQuery} 
-                                onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }} 
-                                placeholder="Поиск фильмов и сериалов..."
-                            />
-                            <S.BurgerWrapper>
-                                <FilterMenu
-                                    year={year}
-                                    setYear={(val) => { setYear(val); setPage(1); }}
-                                    contentType={contentType}
-                                    setContentType={(val) => { setContentType(val); setPage(1); }}
-                                    sortByRating={sortByRating}
-                                    setSortByRating={(val) => { setSortByRating(val); setPage(1); }}
-                                />
-                            </S.BurgerWrapper>
-                        </S.SearchContainer>
-                        <SearchSuggestion 
-                            suggestion={searchSuggestion} 
-                            onAccept={handleAcceptSuggestion} 
-                        />
-                    </S.SearchSection>
+                    <SearchInputWrapper />
                 ) : (
                     <S.EmptySearchSpacer />
                 )}
+
                 {currentUser ? (
                     <S.ProfileMenuContainer ref={menuRef}>
                         <S.AvatarCircle
@@ -103,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
                             <ProfileDropdown user={currentUser} onLogout={handleLogout} />
                         )}
                     </S.ProfileMenuContainer>
-                    ) : (
+                ) : (
                     <S.LoginLink to="/auth">Войти</S.LoginLink>
                 )}
             </S.HeaderNav>

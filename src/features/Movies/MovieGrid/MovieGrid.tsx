@@ -1,25 +1,36 @@
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useSearchMoviesQuery } from '../../../services/movieApi';
 import { MovieCard } from '../MovieCard/MovieCard';
-import { useEffect, useRef, useMemo } from 'react';S
+import { useEffect, useRef, useMemo } from 'react';
 import { useSpellChecker } from '../../../hooks/UseSpellChecker';
 import * as S from './MovieGridStyle';
 import type { MoviesContextType } from '../../../components/MainLayout';
 import { getMovieRating } from '../../../utils/getMovieRating'
 import { GridSkeleton } from './GridSkeleton';
+import {useMovieTranslator} from '../../../hooks/UseMovieTranslator'
+import { useSelector } from 'react-redux';
+import { selectSearchByPage } from '../../Filters/searchSlice'; 
+import { useDebounce } from '../../../hooks/UseDebounce';
+
 
 
 export const MovieGrid: React.FC = () => {
     const navigate = useNavigate();
     const loaderRef = useRef<HTMLDivElement>(null); 
-    const { debouncedSearchQuery, page, setPage, contentType, year, sortByRating, setSearchSuggestion } = useOutletContext<MoviesContextType>();
+    const { page, setPage } = useOutletContext<MoviesContextType>();
+    const homeSearchState = useSelector(selectSearchByPage('home'));
+    const debouncedSearchQuery = useDebounce(homeSearchState.query, 500);
     useSpellChecker();
+    useMovieTranslator();
 
+    const hasRussianLetters = debouncedSearchQuery ? /[а-яА-ЯёЁ]/.test(debouncedSearchQuery) : false;
     const { data, isFetching, isError } = useSearchMoviesQuery({
-        s: debouncedSearchQuery.trim() || 'a',
+        s: debouncedSearchQuery.trim() || 'man',
         page: page,
-        type: contentType || undefined,
-        y: year || undefined,
+        type: homeSearchState.contentType || undefined,
+        y: homeSearchState.year || undefined,
+    }, {
+        skip: hasRussianLetters,
     });
 
     const processedMovies = useMemo(() => {
@@ -27,9 +38,9 @@ export const MovieGrid: React.FC = () => {
         
         let result = [...data.Search];
 
-        if (sortByRating === 'desc') {
+        if (homeSearchState.sortByRating === 'desc') {
             result.sort((a, b) => getMovieRating(b.imdbID) - getMovieRating(a.imdbID)); 
-        } else if (sortByRating === 'asc') {
+        } else if (homeSearchState.sortByRating === 'asc') {
             result.sort((a, b) => getMovieRating(a.imdbID) - getMovieRating(b.imdbID)); 
         }
 
@@ -38,7 +49,7 @@ export const MovieGrid: React.FC = () => {
             return result;
         }
         return result.slice(0, totalToShow);
-    }, [data, sortByRating]);
+    }, [data, homeSearchState.sortByRating]);
 
     useEffect(() => {
         if (isFetching || isError) return;
@@ -64,10 +75,11 @@ export const MovieGrid: React.FC = () => {
         };
     }, [data, isFetching, isError, setPage]);
 
+    const showSkeleton = (isFetching && page === 1) || (hasRussianLetters && debouncedSearchQuery !== '');
 
     return (
         <S.ListContainer>           
-            {isFetching && page === 1 ? (
+            {showSkeleton ? (
                 <GridSkeleton />
             ) : (
                 <>

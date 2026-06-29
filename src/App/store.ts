@@ -3,6 +3,7 @@ import { movieApi } from '../services/movieApi';
 import { authReducer } from '../features/Auth/AuthSlice';
 import { watchLaterReducer } from '../features/WatchLater/WatchLaterSlice';
 import { favoritesReducer } from '../features/Favorites/FavoritesSlice';
+import  searchReducer from '../features/Filters/searchSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authReducer,
     watchLater: watchLaterReducer,
     favorites: favoritesReducer,
+    search: searchReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(movieApi.middleware),

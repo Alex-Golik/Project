@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { MovieShort } from '../../../types/movie';
 import * as S from './MovieCardStyle';
 import { getMovieRating, getRatingColor } from '../../../utils/getMovieRating';
@@ -6,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleWatchLater, selectWatchLaterMovies } from '../../WatchLater/WatchLaterSlice';
 import { toggleFavorite, selectFavoriteMovies } from '../../Favorites/FavoritesSlice';
 import { useToast } from '../../../hooks/UseToast';
+import { useImagePreloader } from '../../../hooks/UseImagePreloader';
 
 
 interface MovieCardProps {
@@ -14,8 +14,6 @@ interface MovieCardProps {
 }
 
 export const MovieCard: React.FC<MovieCardProps> = ({ movie, onCardClick }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
   const dispatch = useDispatch();
   const { showToast } = useToast();
   const watchLaterMovies = useSelector(selectWatchLaterMovies);
@@ -24,6 +22,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onCardClick }) => {
   const isFavorite = favoriteMovies.some(m => m.imdbID === movie.imdbID);
   const rating = getMovieRating(movie.imdbID);
   const ratingColor = getRatingColor(rating);
+  const { isLoaded, hasError } = useImagePreloader(movie.Poster);
   const isMissingPoster = movie.Poster === 'N/A' || hasError;
 
   const handleWatchLaterClick = (e: React.MouseEvent) => {
@@ -80,8 +79,6 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onCardClick }) => {
           alt={movie.Title} 
           loading="lazy" 
           $isLoaded={isLoaded} 
-          onLoad={() => setIsLoaded(true)}
-          onError={() => setHasError(true)}
         />
       )}
       </S.ImageContainer>

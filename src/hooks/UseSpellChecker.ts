@@ -1,17 +1,21 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import type { MoviesContextType } from '../components/MainLayout';
+import { useDebounce } from './UseDebounce';
+import { useDispatch, useSelector } from 'react-redux'
+import { selectSearchByPage, updateSearch } from '../features/Filters/searchSlice';
 
 export const useSpellChecker = () => {
-    const { debouncedSearchQuery, setSearchSuggestion } = useOutletContext<MoviesContextType>();
+    const dispatch = useDispatch();
+    const homeSearchState = useSelector(selectSearchByPage('home'));
+    const debouncedSearchQuery = useDebounce(homeSearchState.query, 500);
 
     useEffect(() => {
-    let isCancelled = false;
     
-    if (!debouncedSearchQuery || debouncedSearchQuery.length < 3) {
-        setSearchSuggestion('');
+    if (!debouncedSearchQuery || debouncedSearchQuery === 'man' || debouncedSearchQuery.length < 3) {
+        dispatch(updateSearch({ page: 'home', key: 'suggestion', value: '' }));
         return;
     }
+
+    let isCancelled = false;
 
     const checkSpelling = async () => {
         try {
@@ -26,14 +30,13 @@ export const useSpellChecker = () => {
                 const correctedWord = data[0].s[0];
                 const wrongWord = data[0].word;
                 const fullCorrection = debouncedSearchQuery.replace(wrongWord, correctedWord);
-                setSearchSuggestion(fullCorrection);
-            } else {
-                setSearchSuggestion('');
+                if (fullCorrection.toLowerCase() !== debouncedSearchQuery.toLowerCase()) {
+                        dispatch(updateSearch({ page: 'home', key: 'suggestion', value: fullCorrection}));
+                }
             }
         } catch (error) {
             if (!isCancelled) {
                 console.error('Ошибка проверки орфографии:', error);
-                setSearchSuggestion('');
             }
         }
     };
@@ -41,5 +44,5 @@ export const useSpellChecker = () => {
     return () => {
         isCancelled = true;
     };
-    }, [debouncedSearchQuery, setSearchSuggestion]);
+    }, [debouncedSearchQuery, dispatch]);
 };

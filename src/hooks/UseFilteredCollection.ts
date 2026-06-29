@@ -1,35 +1,43 @@
 import { useMemo } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getMovieRating } from '../utils/getMovieRating';
 import type { MovieShort } from '../types/movie';
-import type { MoviesContextType } from '../components/MainLayout';
+import { useSelector } from 'react-redux';
+import { selectSearchByPage} from '../features/Filters/searchSlice';
+
 
 export const useFilteredCollection = (moviesList: MovieShort[]) => {
-    const { debouncedSearchQuery, contentType, year, sortByRating } = useOutletContext<MoviesContextType>();
+    const location = useLocation();
+    const pageKey: 'watchLater' | 'favorites' = 
+    location.pathname === '/watch-later' ? 'watchLater' : 'favorites';
+
+    const { query, contentType, year, sortByRating } = useSelector(selectSearchByPage(pageKey));
 
     const filteredMovies = useMemo(() => {
         let result = [...moviesList];
 
-
-        if (debouncedSearchQuery && debouncedSearchQuery.toLowerCase() !== 'man') {
-                result = result.filter(m => m.Title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()));
+        if (query && query.trim() !== '') {
+            result = result.filter(m => m.Title.toLowerCase().includes(query.toLowerCase()));
         }
+
         if (contentType) {
-            result = result.filter(m => m.Type.toLowerCase() === contentType.toLowerCase());
+            result = result.filter(m => m.Type === contentType);
         }
-
+    
         if (year) {
-            result = result.filter(m => m.Year === year);
+            result = result.filter(m => m.Year.includes(year));
         }
 
-        if (sortByRating === 'desc') {
-            result.sort((a, b) => getMovieRating(b.imdbID) - getMovieRating(a.imdbID));
-        } else if (sortByRating === 'asc') {
-            result.sort((a, b) => getMovieRating(a.imdbID) - getMovieRating(b.imdbID));
+        if (sortByRating) {
+            result.sort((a, b) => {
+                const ratingA = getMovieRating(a.imdbID);
+                const ratingB = getMovieRating(b.imdbID);
+                return sortByRating === 'high' ? ratingB - ratingA : ratingA - ratingB;
+            });
         }
 
         return result;
-    }, [moviesList, debouncedSearchQuery, contentType, year, sortByRating]); 
+    }, [moviesList, query, contentType, year, sortByRating]);
 
     return filteredMovies;
 };
