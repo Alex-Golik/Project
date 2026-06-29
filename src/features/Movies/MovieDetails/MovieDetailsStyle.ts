@@ -1,5 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
+interface SkeletonLineProps {
+  $width?: string;
+}
+
 const skeletonGlow = keyframes`
   0% { background-color: #1a1a24; }
   50% { background-color: #2d2d3f; }
@@ -18,7 +22,8 @@ export const SkeletonContainer = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-  }`;
+  }
+`;
 
 export const SkeletonPoster = styled.div`
   width: 300px;
@@ -58,8 +63,8 @@ export const SkeletonMetaGroup = styled.div`
 `;
 
 
-export const SkeletonLine = styled.div<{ $width?: string }>`
-  width: ${props => props.$width || '40%'};
+export const SkeletonLine = styled.div<SkeletonLineProps>`
+  width: ${props => props.$width || '100%'};
   height: 16px;
   border-radius: 4px;
   animation: ${skeletonGlow} 1.5s ease-in-out infinite;
@@ -197,5 +202,45 @@ export const ErrorContainer = styled.div`
     font-weight: 600;
     color: var(--danger-color, #ff4d4d);
     margin: 0;
+  }
+`;
+
+export const ActionButtonsGroup = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+`;
+
+interface ActionBtnProps {
+  $isActive: boolean;
+}
+
+export const ActionBtn = styled.button<ActionBtnProps>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: ${props => props.$isActive ? 'var(--accent-color, #7b61ff)' : '#2d2d3f'};
+  color: var(--text-main, #fff);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+
+  &:hover {
+    background-color: ${props => props.$isActive ? 'var(--accent-hover)' : '#3d3d55'};
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
   }
 `;

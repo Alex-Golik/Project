@@ -13,6 +13,7 @@ export const Container = styled.div`
 `;
 
 export const BurgerButton = styled.button`
+  font-family: inherit;
   background: none;
   border: none;
   cursor: pointer;
@@ -28,6 +29,12 @@ export const BurgerButton = styled.button`
   
   &:active {
     transform: scale(0.95);
+  }
+  
+  &:focus-visible {
+    outline: 2px solid var(--accent-color, #e50914);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 `;
 
@@ -67,6 +74,7 @@ export const FilterLabel = styled.label`
 `;
 
 export const Select = styled.select`
+  font-family: inherit;
   width: 100%;
   padding: 8px;
   border-radius: 6px;
@@ -77,6 +85,10 @@ export const Select = styled.select`
   outline: none;
   font-size: 14px;
   transition: border-color 0.2s ease;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:focus {
     border-color: var(--accent-color, #e50914);
@@ -89,6 +101,7 @@ export const Select = styled.select`
 `;
 
 export const ResetButton = styled.button`
+  font-family: inherit;
   margin-top: 4px;
   padding: 8px;
   border: none;

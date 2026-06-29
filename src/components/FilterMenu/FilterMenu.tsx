@@ -1,44 +1,32 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as S from './FilterMenuStyle';
 import { RatingSortSelect } from './RatingSortSelect';
 import { YearSelect } from './YearSelect';
 import { ContentTypeSelect } from './ContentTypeSelect';
+import { useAppDispatch } from '../../hooks/UseAppDispatch';
+import { useAppSelector } from '../../hooks/UseAppSelector';
+import * as R from '../../features/Filters/SearchSlice';
 
-interface FilterMenuProps {
-  year: string;
-  setYear: (year: string) => void;
-  contentType: string;
-  setContentType: (type: string) => void;
-  sortByRating: string;
-  setSortByRating: (val: string) => void;
-}
-
-export const FilterMenu: React.FC<FilterMenuProps> = ({
-  year,
-  setYear,
-  contentType,
-  setContentType,
-  sortByRating,
-  setSortByRating,
-}) => {
+export const FilterMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const pageKey = location.pathname === '/watch-later' ? 'watchLater' : location.pathname === '/favorites' ? 'favorites' : 'home';
+  const { year, contentType, sortByRating } = useAppSelector(R.selectSearchByPage(pageKey));
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen]);
-
-  const handleReset = () => {
-    setYear('');
-    setContentType('');
-    setSortByRating('');
-    setIsOpen(false);
-  };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, []);
 
   const hasActiveFilters = year || contentType || sortByRating;
 
@@ -52,12 +40,15 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
       
       {isOpen && (
         <S.Dropdown>
-          <RatingSortSelect value={sortByRating} onChange={setSortByRating} />
-          <YearSelect value={year} onChange={setYear} />
-          <ContentTypeSelect value={contentType} onChange={setContentType} />
+          <RatingSortSelect value={sortByRating} onChange={(val) => dispatch(R.updateSortByRating({ page: pageKey, value: val }))}  />
+          <YearSelect value={year} onChange={(val) => dispatch(R.updateSearchText({ page: pageKey, key: 'year', value: val }))}  />
+          <ContentTypeSelect value={contentType} onChange={(val) => dispatch(R.updateContentType({ page: pageKey, value: val }))} />
 
           {hasActiveFilters && (
-            <S.ResetButton onClick={handleReset}>
+            <S.ResetButton onClick={() => {
+                dispatch(R.resetPageFilters(pageKey));
+                setIsOpen(false);
+              }}>
               Сбросить все
             </S.ResetButton>
           )}

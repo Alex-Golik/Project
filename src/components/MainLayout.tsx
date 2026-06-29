@@ -1,42 +1,22 @@
 import { useState } from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import { Header } from './Header/Header';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../hooks/UseAppSelector';
 import { selectCurrentUser } from '../features/Auth/AuthSlice';
 import { Tabs } from './Tabs/Tabs';
-import { useDebounce } from '../hooks/UseDebounce';
 import * as S from '../AppStyle'; 
 
 
 export interface MoviesContextType {
-  searchQuery: string;
-  setSearchQuery: (val: string) => void;
-  debouncedSearchQuery: string; 
-  searchSuggestion: string; 
-  setSearchSuggestion: (val: string) => void; 
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  contentType: string;
-  setContentType: (val: string) => void;
-  year: string;
-  setYear: (val: string) => void;
-  sortByRating: string;
-  setSortByRating: (val: string) => void;
-  localCollectionQuery: string;
-  setLocalCollectionQuery: (val: string) => void; 
 }
 
-export const MainLayout: React.FC = () => {
+export const MainLayout = () => {
     const location = useLocation();
-    const currentUser = useSelector(selectCurrentUser);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchSuggestion, setSearchSuggestion] = useState('');
+    const currentUser = useAppSelector(selectCurrentUser);
     const [page, setPage] = useState(1);
-    const [contentType, setContentType] = useState('');
-    const [year, setYear] = useState('');
-    const [sortByRating, setSortByRating] = useState('');
-    const debouncedSearchQuery = useDebounce(searchQuery, 500);
-    const [localCollectionQuery, setLocalCollectionQuery] = useState('');
+
 
   const isAuthPage = location.pathname === '/auth' || location.pathname === '/about';
   if (!currentUser && !isAuthPage) {
@@ -53,17 +33,7 @@ export const MainLayout: React.FC = () => {
       </S.Sidebar>
       <S.MainContent>
         <Header />
-
-        <Outlet context={{ 
-          searchQuery, setSearchQuery, 
-          debouncedSearchQuery,
-          searchSuggestion, setSearchSuggestion,
-          page, setPage, 
-          contentType, setContentType, 
-          year, setYear, 
-          sortByRating, setSortByRating,
-          localCollectionQuery, setLocalCollectionQuery
-          }} />
+        <Outlet context={{ page, setPage } satisfies MoviesContextType} />
       </S.MainContent>
     </S.AppLayout>
   );

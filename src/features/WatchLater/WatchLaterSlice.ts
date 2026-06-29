@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { MovieShort } from '../../types/movie';
-import type { RootState } from '../../App/store';
+import type { RootState } from '../../App/Store';
 
 interface WatchLaterState {
     movies: MovieShort[];
@@ -30,7 +30,7 @@ const watchLaterSlice = createSlice({
         } else {
             state.movies.push(action.payload);
         }
-        localStorage.setItem('pixema_watch_later', JSON.stringify(state.movies));
+            localStorage.setItem('pixema_watch_later', JSON.stringify(state.movies));
         },
         clearWatchLater: (state) => {
             state.movies = [];

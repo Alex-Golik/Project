@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../hooks/UseAppSelector';
 import { useNavigate } from 'react-router-dom';
 import { selectFavoriteMovies, clearFavorites } from '../features/Favorites/FavoritesSlice';
 import { MovieCard } from '../features/Movies/MovieCard/MovieCard';
@@ -7,10 +7,10 @@ import { PageHeader } from '../components/PageHeader/PageHeader';
 import { useAppDispatch } from '../hooks/UseAppDispatch';
 import * as S from '../features/Movies/MovieGrid/MovieGridStyle'; 
 
-export const FavoritesPage: React.FC = () => {
+export const FavoritesPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const favoriteMovies = useSelector(selectFavoriteMovies);
+    const favoriteMovies = useAppSelector(selectFavoriteMovies);
     const filteredMovies = useFilteredCollection(favoriteMovies);
 
     return (

@@ -2,16 +2,17 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getMovieRating } from '../utils/getMovieRating';
 import type { MovieShort } from '../types/movie';
-import { useSelector } from 'react-redux';
-import { selectSearchByPage} from '../features/Filters/searchSlice';
+import type { ContentType } from '../components/FilterMenu/ContentTypeSelect';
+import { useAppSelector } from './UseAppSelector'; 
+import { selectSearchByPage} from '../features/Filters/SearchSlice';
 
 
 export const useFilteredCollection = (moviesList: MovieShort[]) => {
     const location = useLocation();
     const pageKey: 'watchLater' | 'favorites' = 
-    location.pathname === '/watch-later' ? 'watchLater' : 'favorites';
+        location.pathname === '/watch-later' ? 'watchLater' : 'favorites';
 
-    const { query, contentType, year, sortByRating } = useSelector(selectSearchByPage(pageKey));
+    const { query, contentType, year, sortByRating } = useAppSelector(selectSearchByPage(pageKey));
 
     const filteredMovies = useMemo(() => {
         let result = [...moviesList];
@@ -21,7 +22,7 @@ export const useFilteredCollection = (moviesList: MovieShort[]) => {
         }
 
         if (contentType) {
-            result = result.filter(m => m.Type === contentType);
+            result = result.filter(m => m.Type === (contentType as ContentType));
         }
     
         if (year) {
@@ -32,7 +33,7 @@ export const useFilteredCollection = (moviesList: MovieShort[]) => {
             result.sort((a, b) => {
                 const ratingA = getMovieRating(a.imdbID);
                 const ratingB = getMovieRating(b.imdbID);
-                return sortByRating === 'high' ? ratingB - ratingA : ratingA - ratingB;
+                return sortByRating === 'desc' ? ratingB - ratingA : ratingA - ratingB;
             });
         }
 

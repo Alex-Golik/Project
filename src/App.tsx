@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'; 
-import { store } from './App/store';     
+import { store } from './App/Store';     
 import { MovieGrid } from './features/Movies/MovieGrid/MovieGrid';
 import { MovieDetails } from './features/Movies/MovieDetails/MovieDetails';
 import { Auth } from './features/Auth/Auth';

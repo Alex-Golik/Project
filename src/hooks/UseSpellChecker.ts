@@ -1,17 +1,20 @@
 import { useEffect } from 'react';
 import { useDebounce } from './UseDebounce';
-import { useDispatch, useSelector } from 'react-redux'
-import { selectSearchByPage, updateSearch } from '../features/Filters/searchSlice';
+import { selectSearchByPage, updateSearchText } from '../features/Filters/SearchSlice';
+import { useAppDispatch } from './UseAppDispatch';
+import { useAppSelector } from './UseAppSelector';
 
 export const useSpellChecker = () => {
-    const dispatch = useDispatch();
-    const homeSearchState = useSelector(selectSearchByPage('home'));
+    const dispatch = useAppDispatch();
+    const homeSearchState = useAppSelector(selectSearchByPage('home'));
     const debouncedSearchQuery = useDebounce(homeSearchState.query, 500);
 
     useEffect(() => {
     
     if (!debouncedSearchQuery || debouncedSearchQuery === 'man' || debouncedSearchQuery.length < 3) {
-        dispatch(updateSearch({ page: 'home', key: 'suggestion', value: '' }));
+        if (homeSearchState.suggestion !== '') {
+            dispatch(updateSearchText({ page: 'home', key: 'suggestion', value: ''}));
+        }
         return;
     }
 
@@ -31,7 +34,7 @@ export const useSpellChecker = () => {
                 const wrongWord = data[0].word;
                 const fullCorrection = debouncedSearchQuery.replace(wrongWord, correctedWord);
                 if (fullCorrection.toLowerCase() !== debouncedSearchQuery.toLowerCase()) {
-                        dispatch(updateSearch({ page: 'home', key: 'suggestion', value: fullCorrection}));
+                        dispatch(updateSearchText({ page: 'home', key: 'suggestion', value: fullCorrection }));
                 }
             }
         } catch (error) {
@@ -44,5 +47,5 @@ export const useSpellChecker = () => {
     return () => {
         isCancelled = true;
     };
-    }, [debouncedSearchQuery, dispatch]);
+    }, [debouncedSearchQuery, dispatch, homeSearchState.suggestion]);
 };

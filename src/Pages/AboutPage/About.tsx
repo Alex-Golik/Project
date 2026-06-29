@@ -1,7 +1,7 @@
 import * as S from './AboutStyle'; 
 import * as R from '../../AppStyle'; 
 
-export const AboutPage: React.FC = () => {
+export const AboutPage = () => {
   return (
     <R.InfoPageContainer>
       <S.InfoTitle>About Project</S.InfoTitle>
@@ -17,6 +17,7 @@ export const AboutPage: React.FC = () => {
       <S.TechList>
         <li>🚀 <strong>React 19 & Vite</strong> — передовой фронтенд-стек для мгновенной сборки и работы интерфейса</li>
         <li>🔷 <strong>TypeScript</strong> — строгая типизация данных (интерфейсы ответов OMDb, пропсов и стейта)</li>
+        <li>📁 <strong>Feature-Driven Architecture</strong> — модульная структура проекта, разделяющая бизнес-логику фич на изолированные независимые слои</li>
         <li>🔄 <strong>Redux Toolkit & RTK Query</strong> — управление глобальным стейтом авторизации, кэширование поисковых запросов и предотвращение лишних сетевых вызовов</li>
         <li>🕒 <strong>Watch Later</strong> — изолированный модуль отложенного просмотра с синхронизацией в <code>localStorage</code></li>
         <li>⭐ <strong>Favorites</strong> — персональная коллекция избранного с независимым Redux-слайсом</li>

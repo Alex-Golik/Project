@@ -1,6 +1,6 @@
 import * as S from './MovieGridStyle';
 
-export const GridSkeleton: React.FC = () => {
+export const GridSkeleton = () => {
 
     const skeletonItems = Array.from({ length: 12 });
 

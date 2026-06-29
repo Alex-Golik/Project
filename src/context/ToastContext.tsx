@@ -1,11 +1,11 @@
-import { createContext, useState, useCallback } from 'react';
+import { createContext, useState, useCallback, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 interface ToastContextType {
     showToast: (message: string) => void;
 }
 
-export const ToastContext = createContext<ToastContextType | undefined>(undefined);
+export const ToastContext = createContext<ToastContextType | null>(null);
 
 
 const slideIn = keyframes`
@@ -33,17 +33,25 @@ const ToastContainer = styled.div`
     animation: ${slideIn} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 `;
 
-export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface ToastProviderProps {
+    children: React.ReactNode;
+}
+
+export const ToastProvider = ({ children }: ToastProviderProps) => {
     const [toast, setToast] = useState<{ message: string; isVisible: boolean }>({
         message: '',
         isVisible: false,
     });
 
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const showToast = useCallback((message: string) => {
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
         setToast({ message, isVisible: true });
-
         setTimeout(() => {
             setToast((prev) => ({ ...prev, isVisible: false }));
+            timerRef.current = null; 
         }, 2000);
     }, []);
 

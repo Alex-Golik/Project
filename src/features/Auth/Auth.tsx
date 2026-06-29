@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './Authstyles';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/UseAppDispatch'; 
 import { loginUser } from './AuthSlice';
 import type { UserInfo } from './AuthSlice';
 
-export const Auth: React.FC = () => {
+export const Auth = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+     const dispatch = useAppDispatch();
     const [isRegisterMode, setIsRegisterMode] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -65,7 +65,7 @@ export const Auth: React.FC = () => {
         return (
         <S.AuthContainer>
             <S.AuthTitle>
-                {isRegisterMode ? 'Регистрация' : 'Вход в CinemaHub'}
+                {isRegisterMode ? 'Регистрация' : 'Вход в Pixema'}
             </S.AuthTitle>
 
             {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
@@ -107,7 +107,7 @@ export const Auth: React.FC = () => {
                         <S.AuthToggleText>
                 {isRegisterMode ? 'Уже есть аккаунт?' : 'Впервые у нас?'} {' '}
                 <S.AuthToggleLink onClick={() => { setIsRegisterMode(!isRegisterMode); setError(''); }}>
-                    {isRegisterMode ? 'Создать аккаунт' : 'Войти'}
+                    {isRegisterMode ? 'Войти' : 'Зарегистрироваться'}
                 </S.AuthToggleLink>
             </S.AuthToggleText>
         </S.AuthContainer>

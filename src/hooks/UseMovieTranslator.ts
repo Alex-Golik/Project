@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectSearchByPage, updateSearch } from '../features/Filters/searchSlice';
+import { selectSearchByPage, updateSearchText } from '../features/Filters/SearchSlice';
 import { useDebounce } from './UseDebounce'
+import { useAppDispatch } from './UseAppDispatch';
+import { useAppSelector } from './UseAppSelector';
 
 export const useMovieTranslator = () => {
-    const dispatch = useDispatch();
-    const homeSearchState = useSelector(selectSearchByPage('home'));
+    const dispatch = useAppDispatch();
+    const homeSearchState = useAppSelector(selectSearchByPage('home'));
     const debouncedSearchQuery = useDebounce(homeSearchState.query, 500);
 
     useEffect(() => {
@@ -44,7 +45,7 @@ export const useMovieTranslator = () => {
                     const englishTitle = bestMatch.nameEn;
 
                     if (englishTitle && englishTitle.toLowerCase() !== debouncedSearchQuery.toLowerCase()) {
-                        dispatch(updateSearch({ page: 'home', key: 'query', value: englishTitle }));
+                        dispatch(updateSearchText({ page: 'home', key: 'query', value: englishTitle }));
                     }
                 }
             } catch (error) {

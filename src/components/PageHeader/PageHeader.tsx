@@ -8,12 +8,12 @@ interface PageHeaderProps {
     successMessage: string;
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({
+export const PageHeader = ({
     title,
     hasMovies,
     onClear,
     successMessage,
-}) => {
+}: PageHeaderProps) => {
     const { showToast } = useToast();
 
     const handleClearAll = () => {

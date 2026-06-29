@@ -1,11 +1,12 @@
 import type { MovieShort } from '../../../types/movie';
 import * as S from './MovieCardStyle';
 import { getMovieRating, getRatingColor } from '../../../utils/getMovieRating';
-import { useDispatch, useSelector } from 'react-redux';
 import { toggleWatchLater, selectWatchLaterMovies } from '../../WatchLater/WatchLaterSlice';
 import { toggleFavorite, selectFavoriteMovies } from '../../Favorites/FavoritesSlice';
 import { useToast } from '../../../hooks/UseToast';
 import { useImagePreloader } from '../../../hooks/UseImagePreloader';
+import { useAppDispatch } from '../../../hooks/UseAppDispatch';
+import { useAppSelector } from '../../../hooks/UseAppSelector';
 
 
 interface MovieCardProps {
@@ -13,19 +14,19 @@ interface MovieCardProps {
   onCardClick: (id: string) => void;
 }
 
-export const MovieCard: React.FC<MovieCardProps> = ({ movie, onCardClick }) => {
-  const dispatch = useDispatch();
+export const MovieCard = ({ movie, onCardClick }: MovieCardProps) => {
+  const dispatch = useAppDispatch(); 
   const { showToast } = useToast();
-  const watchLaterMovies = useSelector(selectWatchLaterMovies);
-  const isWatchLater = watchLaterMovies.some(m => m.imdbID === movie.imdbID);
-  const favoriteMovies = useSelector(selectFavoriteMovies);
+  const favoriteMovies = useAppSelector(selectFavoriteMovies);
   const isFavorite = favoriteMovies.some(m => m.imdbID === movie.imdbID);
+  const watchLaterMovies = useAppSelector(selectWatchLaterMovies);
+  const isWatchLater = watchLaterMovies.some(m => m.imdbID === movie.imdbID);
   const rating = getMovieRating(movie.imdbID);
   const ratingColor = getRatingColor(rating);
   const { isLoaded, hasError } = useImagePreloader(movie.Poster);
   const isMissingPoster = movie.Poster === 'N/A' || hasError;
 
-  const handleWatchLaterClick = (e: React.MouseEvent) => {
+  const handleWatchLaterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); 
     dispatch(toggleWatchLater(movie));
     if (isWatchLater) {
@@ -36,7 +37,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onCardClick }) => {
   };
 
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); 
     dispatch(toggleFavorite(movie));
     if (isFavorite) {

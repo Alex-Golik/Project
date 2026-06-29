@@ -1,6 +1,7 @@
 import * as S from './MovieDetailsStyle';
 
-export const DetailsSkeleton: React.FC = () => {
+
+export const DetailsSkeleton = () => {
     return (
         <S.SkeletonContainer>
         <S.SkeletonPoster />

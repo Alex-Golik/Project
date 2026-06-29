@@ -1,14 +1,14 @@
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/UseAppSelector';
 import { selectWatchLaterMovies } from '../../features/WatchLater/WatchLaterSlice';
 import { selectFavoriteMovies } from '../../features/Favorites/FavoritesSlice';
 import * as S from './TabsStyle';
 
 
-export const Tabs: React.FC = () => {
+export const Tabs = () => {
   const location = useLocation();
-  const watchLaterMovies = useSelector(selectWatchLaterMovies);
-  const favoriteMovies = useSelector(selectFavoriteMovies);
+  const watchLaterMovies = useAppSelector(selectWatchLaterMovies);
+  const favoriteMovies = useAppSelector(selectFavoriteMovies);
 
   return (
     <S.TabsContainer>

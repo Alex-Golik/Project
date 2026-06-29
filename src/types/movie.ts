@@ -16,6 +16,7 @@ export interface MovieSearchResponse {
 
 
 export interface MovieDetails {
+  imdbID: string;
   Title: string;
   Year: string;
   Rated: string;

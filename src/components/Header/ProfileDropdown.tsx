@@ -1,4 +1,3 @@
-import React from 'react';
 import * as S from './HeaderStyle';
 import { formatDate } from '../../utils/formatDate';
 import type { UserInfo } from '../../features/Auth/AuthSlice';
@@ -8,7 +7,7 @@ interface ProfileDropdownProps {
     onLogout: () => void;
 }
 
-export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user, onLogout }) => {
+export const ProfileDropdown = ({ user, onLogout }: ProfileDropdownProps) => {
     return (
         <S.ProfileDropdown>
             <S.ProfileDropdownInfo>

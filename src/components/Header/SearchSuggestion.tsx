@@ -25,7 +25,7 @@ const SuggestionLink = styled.span`
     }
 `;
 
-export const SearchSuggestion: React.FC<SearchSuggestionProps> = ({ suggestion, onAccept }) => {
+export const SearchSuggestion = ({ suggestion, onAccept }: SearchSuggestionProps) => {
     if (!suggestion) return null;
 
     return (

@@ -3,32 +3,33 @@ import { useLocation } from 'react-router-dom';
 import * as S from './HeaderStyle';
 import { FilterMenu } from '../FilterMenu/FilterMenu';
 import { SearchSuggestion } from './SearchSuggestion';
-import { useDispatch, useSelector } from 'react-redux';
-import * as R from '../../features/Filters/searchSlice';
+import { useAppDispatch } from '../../hooks/UseAppDispatch';
+import { useAppSelector } from '../../hooks/UseAppSelector';
+import * as R from '../../features/Filters/SearchSlice';
 
-export const SearchInputWrapper: React.FC = () => {
+export const SearchInputWrapper = () => {
     const location = useLocation();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const pageKey: 'home' | 'watchLater' | 'favorites' = 
     location.pathname === '/' ? 'home' : 
     location.pathname === '/watch-later' ? 'watchLater' : 'favorites';
 
-    const pageState = useSelector(R.selectSearchByPage(pageKey))
+    const pageState = useAppSelector(R.selectSearchByPage(pageKey));
 
     const handleAcceptSuggestion = (correctedText: string) => {
-    dispatch(R.updateSearch({ page: 'home', key: 'query', value: correctedText }));
-    dispatch(R.updateSearch({ page: 'home', key: 'suggestion', value: '' }));
+    dispatch(R.updateSearchText({ page: 'home', key: 'query', value: correctedText }));
+    dispatch(R.updateSearchText({ page: 'home', key: 'suggestion', value: '' }));
     };
 
     useEffect(() => {
         if (pageKey !== 'home') {
-            dispatch(R.resetPageFilters(pageKey));
+            dispatch(R.clearOnlyFilters(pageKey));
         }
     }, [location.pathname, pageKey, dispatch]);
 
     const handleInputChange = (value: string) => {
-        dispatch(R.updateSearch({ page: pageKey, key: 'query', value }));
+        dispatch(R.updateSearchText({ page: pageKey, key: 'query', value }));
     };
 
 
@@ -42,14 +43,7 @@ export const SearchInputWrapper: React.FC = () => {
                 placeholder="Поиск фильмов и сериалов..."
             />
             <S.BurgerWrapper>
-                <FilterMenu
-                    year={pageState.year}
-                    setYear={(val) => dispatch(R.updateSearch({ page: pageKey, key: 'year', value: val }))}
-                    contentType={pageState.contentType}
-                    setContentType={(val) => dispatch(R.updateSearch({ page: pageKey, key: 'contentType', value: val }))}
-                    sortByRating={pageState.sortByRating}
-                    setSortByRating={(val) => dispatch(R.updateSearch({ page: pageKey, key: 'sortByRating', value: val }))}
-                />
+                <FilterMenu />
             </S.BurgerWrapper>
         </S.SearchContainer>
         {pageKey === 'home' && pageState.suggestion && (

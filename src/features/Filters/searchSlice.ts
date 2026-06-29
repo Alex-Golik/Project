@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../App/store';
+import type { RootState } from '../../App/Store';
+import type { ContentType } from '../../components/FilterMenu/ContentTypeSelect';
+import type { SortType } from '../../components/FilterMenu/RatingSortSelect';
 
 interface PageSearchState {
     query: string;
-    contentType: string;
+    contentType: ContentType;
     year: string;
-    sortByRating: string;
+    sortByRating: SortType;
     suggestion: string;
 }
 
@@ -30,28 +32,51 @@ const initialState: SearchState = {
     favorites: initialPageState(),
 };
 
+type PageKey = keyof SearchState;
+
 const searchSlice = createSlice({
     name: 'search',
     initialState,
     reducers: {
 
-        updateSearch: (
+        updateSearchText: (
             state, 
-            action: PayloadAction<{ page: 'home' | 'watchLater' | 'favorites'; key: keyof PageSearchState; value: string }>
+            action: PayloadAction<{ page: PageKey; key: 'query' | 'year' | 'suggestion'; value: string }>
         ) => {
             const { page, key, value } = action.payload;
             state[page][key] = value;
         },
-        resetPageFilters: (state, action: PayloadAction<'home' | 'watchLater' | 'favorites'>) => {
-            state[action.payload].contentType = '';
-            state[action.payload].year = '';
-            state[action.payload].sortByRating = '';
-            state[action.payload].query = '';
-            state[action.payload].suggestion = '';
+
+        updateContentType: (
+            state,
+            action: PayloadAction<{ page: PageKey; value: ContentType }>
+        ) => {
+            const { page, value } = action.payload;
+            state[page].contentType = value;
+        },
+
+        updateSortByRating: (
+            state,
+            action: PayloadAction<{ page: PageKey; value: SortType }>
+        ) => {
+            const { page, value } = action.payload;
+            state[page].sortByRating = value;
+        },
+
+        resetPageFilters: (state, action: PayloadAction<PageKey>) => {
+            state[action.payload] = initialPageState();
+        },
+
+        clearOnlyFilters: (state, action: PayloadAction<PageKey>) => {
+            const page = action.payload;
+            state[page].contentType = '';
+            state[page].year = '';
+            state[page].sortByRating = '';
+
         }
-    },
+    }
 });
 
-export const { updateSearch, resetPageFilters } = searchSlice.actions;
-export const selectSearchByPage = (page: 'home' | 'watchLater' | 'favorites') => (state: RootState) => state.search[page];
+export const { updateSearchText, updateContentType, updateSortByRating, resetPageFilters, clearOnlyFilters } = searchSlice.actions;
+export const selectSearchByPage = (page: PageKey) => (state: RootState) => state.search[page];
 export default searchSlice.reducer;

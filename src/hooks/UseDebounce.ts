@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 
 export const useDebounce = <T>(value: T, delay: number = 500): T => {
     const [debouncedValue, setDebouncedValue] = useState<T>(value);
-    const timerRef = useRef<number | null>(null);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
-        if (value === '') {
+        if (String(value) === '') {
             if (timerRef.current) clearTimeout(timerRef.current);
             setDebouncedValue(value);
             return;

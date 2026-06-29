@@ -5,6 +5,7 @@ export const useImagePreloader = (src: string) => {
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
+
         setIsLoaded(false);
         setHasError(false);
 
@@ -16,12 +17,17 @@ export const useImagePreloader = (src: string) => {
         const img = new Image();
         img.src = src;
 
-        img.onload = () => {
+        if (img.complete) {
             setIsLoaded(true);
-        };
+            return;
+        }
 
-        img.onerror = () => {
-            setHasError(true);
+        img.onload = () => setIsLoaded(true);
+        img.onerror = () => setHasError(true);
+
+        return () => {
+            img.onload = null;
+            img.onerror = null;
         };
     }, [src]);
 

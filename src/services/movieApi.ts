@@ -35,7 +35,10 @@ searchMovies: builder.query<MovieSearchResponse, { s: string; page: number; type
 
           const existingIds = new Set(currentCache.Search.map(m => m.imdbID));
           const uniqueNewMovies = newItems.Search.filter(m => !existingIds.has(m.imdbID));
-          currentCache.Search.push(...uniqueNewMovies);
+          return {
+            ...newItems, 
+            Search: [...currentCache.Search, ...uniqueNewMovies], 
+          };
         }
         return currentCache;
       },

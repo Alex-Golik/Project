@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../hooks/UseAppSelector'; 
 import { useNavigate } from 'react-router-dom';
 import { selectWatchLaterMovies, clearWatchLater } from '../features/WatchLater/WatchLaterSlice';
 import { MovieCard } from '../features/Movies/MovieCard/MovieCard';
@@ -7,10 +7,10 @@ import { PageHeader } from '../components/PageHeader/PageHeader';
 import { useAppDispatch } from '../hooks/UseAppDispatch';
 import * as S from '../features/Movies/MovieGrid/MovieGridStyle'; 
 
-export const WatchLaterPage: React.FC = () => {
+export const WatchLaterPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch(); 
-    const watchLaterMovies = useSelector(selectWatchLaterMovies);
+    const watchLaterMovies = useAppSelector(selectWatchLaterMovies);
     const filteredMovies = useFilteredCollection(watchLaterMovies);
 
     return (

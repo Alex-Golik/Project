@@ -8,17 +8,17 @@ import type { MoviesContextType } from '../../../components/MainLayout';
 import { getMovieRating } from '../../../utils/getMovieRating'
 import { GridSkeleton } from './GridSkeleton';
 import {useMovieTranslator} from '../../../hooks/UseMovieTranslator'
-import { useSelector } from 'react-redux';
-import { selectSearchByPage } from '../../Filters/searchSlice'; 
+import { useAppSelector } from '../../../hooks/UseAppSelector';
+import { selectSearchByPage } from '../../Filters/SearchSlice'; 
 import { useDebounce } from '../../../hooks/UseDebounce';
 
 
 
-export const MovieGrid: React.FC = () => {
+export const MovieGrid = () => {
     const navigate = useNavigate();
     const loaderRef = useRef<HTMLDivElement>(null); 
     const { page, setPage } = useOutletContext<MoviesContextType>();
-    const homeSearchState = useSelector(selectSearchByPage('home'));
+    const homeSearchState = useAppSelector(selectSearchByPage('home'));
     const debouncedSearchQuery = useDebounce(homeSearchState.query, 500);
     useSpellChecker();
     useMovieTranslator();
@@ -52,6 +52,10 @@ export const MovieGrid: React.FC = () => {
     }, [data, homeSearchState.sortByRating]);
 
     useEffect(() => {
+        setPage(1);
+    }, [homeSearchState.contentType, homeSearchState.year, setPage]);
+
+    useEffect(() => {
         if (isFetching || isError) return;
         
         if (!data?.Search || data.Search.length < 10) return;
@@ -65,15 +69,17 @@ export const MovieGrid: React.FC = () => {
             rootMargin: '200px', 
         });
 
-        if (loaderRef.current) {
-            observer.observe(loaderRef.current);
+        const currentLoader = loaderRef.current;
+
+        if (currentLoader) {
+            observer.observe(currentLoader);
         }
         return () => {
-            if (loaderRef.current) {
-                observer.unobserve(loaderRef.current);
+            if (currentLoader) {
+                observer.unobserve(currentLoader);
             }
         };
-    }, [data, isFetching, isError, setPage]);
+    }, [data, isFetching, isError, setPage, processedMovies.length]);
 
     const showSkeleton = (isFetching && page === 1) || (hasRussianLetters && debouncedSearchQuery !== '');
 

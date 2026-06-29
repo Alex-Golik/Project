@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import * as S from './FilterMenuStyle';
 
-interface Props {
+interface YearSelectProps {
     value: string;
     onChange: (val: string) => void;
 }
 
-export const YearSelect: React.FC<Props> = ({ value, onChange }) => {
+export const YearSelect = ({ value, onChange }: YearSelectProps) => {
     const yearsList = useMemo(() => {
     const currentYear = new Date().getFullYear(); 
-    const startYear = currentYear - 16; 
+    const startYear = currentYear - 76; 
     const years = [];
     for (let y = currentYear; y >= startYear; y--) {
         years.push(y.toString());

@@ -5,21 +5,20 @@ import { ProfileDropdown } from './ProfileDropdown';
 import { SearchInputWrapper } from './SearchInputWrapper';
 import { getInitials } from '../../utils/getInitials';
 import { selectCurrentUser, logoutUser } from '../../features/Auth/AuthSlice'
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/UseAppDispatch'
+import { useAppSelector } from '../../hooks/UseAppSelector';
 
-
-interface HeaderProps {}
-
-export const Header: React.FC<HeaderProps> = () => {
+export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const location = useLocation();
-    const dispatch = useDispatch();
-    const currentUser = useSelector(selectCurrentUser);
-
+    const dispatch = useAppDispatch();
+    const currentUser = useAppSelector(selectCurrentUser);
+    
     useEffect(() => {
+        const currentMenu = menuRef.current;
         const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            if (currentMenu && !currentMenu.contains(event.target as Node)) {
                 setIsMenuOpen(false);
             }
         };
@@ -27,7 +26,6 @@ export const Header: React.FC<HeaderProps> = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
     const handleLogout = () => {
-        localStorage.removeItem('pixema_current_user');
         dispatch(logoutUser());
         setIsMenuOpen(false);
     };
@@ -35,7 +33,7 @@ export const Header: React.FC<HeaderProps> = () => {
     return (
         <S.AppHeader>
             <S.HeaderNav>
-                {location.pathname !== '/auth' && location.pathname !== '/about' ? (
+                {location.pathname !== '/auth' && location.pathname !== '/about' && !location.pathname.startsWith('/movie') ? (
                     <SearchInputWrapper />
                 ) : (
                     <S.EmptySearchSpacer />
